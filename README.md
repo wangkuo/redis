@@ -25,6 +25,7 @@ docker run -d --name redis \
 - `REDIS_MAXMEMORY`: Redis最大内存使用量 (默认: 50mb)
 - `REDIS_MAXMEMORY_POLICY`: 内存淘汰策略 (默认: allkeys-lru)
 - `TZ`: 时区设置 (默认: Asia/Shanghai)
+- `REDIS_PASSWORD`: Redis访问密码 (默认: default_password_please_change)
 
 ### 持久化配置
 
@@ -75,6 +76,33 @@ docker run -d --name redis \
   -e TZ=Asia/Shanghai \
   yourusername/lightweight-redis:latest
 ```
+
+### 安全配置
+
+容器默认启用密码认证。强烈建议在生产环境中修改默认密码：
+
+```bash
+docker run -d --name redis \
+  -p 6379:6379 \
+  -v redis-data:/data \
+  -e REDIS_PASSWORD=your_strong_password \
+  yourusername/lightweight-redis:latest
+```
+
+连接到Redis服务器：
+```bash
+# 使用redis-cli
+redis-cli -h localhost -p 6379 -a your_strong_password
+
+# 使用其他Redis客户端
+redis://username:your_strong_password@localhost:6379
+```
+
+注意：
+- 请使用强密码以提高安全性
+- 避免在生产环境使用默认密码
+- 建议定期更换密码
+- 密码应包含大小写字母、数字和特殊字符
 
 ## 构建信息
 
