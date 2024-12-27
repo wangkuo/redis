@@ -7,6 +7,10 @@ RUN apk add --no-cache 'redis~=7.2' tzdata
 # 设置时区为上海
 ENV TZ=Asia/Shanghai
 
+# 预先设置时区，这样就不需要在运行时设置了
+RUN cp /usr/share/zoneinfo/$TZ /etc/localtime && \
+    echo $TZ > /etc/timezone
+
 # 创建数据目录
 RUN mkdir -p /data && chown redis:redis /data
 
