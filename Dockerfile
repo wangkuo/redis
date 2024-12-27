@@ -11,15 +11,17 @@ ENV TZ=Asia/Shanghai
 RUN cp /usr/share/zoneinfo/$TZ /etc/localtime && \
     echo $TZ > /etc/timezone
 
-# 创建数据目录
-RUN mkdir -p /data && chown redis:redis /data
+# 创建数据和配置目录
+RUN mkdir -p /data /etc/redis && \
+    chown -R redis:redis /data /etc/redis
 
 # 添加配置文件
-COPY redis.conf /etc/redis/redis.conf
-
-# 添加启动脚本
+COPY redis.conf /etc/redis/redis.conf.template
 COPY docker-entrypoint.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+# 设置适当的权限
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh && \
+    chown redis:redis /etc/redis/redis.conf.template
 
 # 设置工作目录
 WORKDIR /data

@@ -6,6 +6,9 @@ if [ -z "$REDIS_PASSWORD" ]; then
     REDIS_PASSWORD="default_password_please_change"
 fi
 
+# 从模板创建实际的配置文件
+cp /etc/redis/redis.conf.template /etc/redis/redis.conf
+
 # 替换配置文件中的密码
 sed -i "s/\${REDIS_PASSWORD}/$REDIS_PASSWORD/g" /etc/redis/redis.conf
 
