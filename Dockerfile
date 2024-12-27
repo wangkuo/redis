@@ -2,7 +2,7 @@
 FROM alpine:3.19
 
 # 安装Redis和tzdata(时区数据)
-RUN apk add --no-cache redis=7.2.4-r0 tzdata
+RUN apk add --no-cache 'redis~=7.2' tzdata
 
 # 设置时区为上海
 ENV TZ=Asia/Shanghai
